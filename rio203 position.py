@@ -6,9 +6,7 @@ Created on Fri Jan 20 09:45:36 2023
 """
 
 import serial, string
-
-from sklearn.decomposition import PCA
-from sklearn.neighbors import KNeighborsClassifier
+import numpy as np
 
 output = " "
 ser = serial.Serial('/dev/ttyUSB0', 4800,8,'N',1,timeout=1)
@@ -35,10 +33,15 @@ fingerprints = [
         3,
     ]
     
+def closest_RSSI(vec,vec_list):
+    min_distance = float('inf')
+    closest_vec = None
+    for v in vec_list:
+        distance = np.linalg.norm(vec - v)
+        if distance < min_distance:
+            min_distance = distance
+            closest_vec = v
+    return closest_vec
 
 
-
-if __name__ == '__main__':
-    _fingerprint_example()
-    _room_example()
 
